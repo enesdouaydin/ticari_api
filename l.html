@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Notifications</title>
+    <script>
+        const socket = new WebSocket("ws://localhost:8000/ws/notifications");
+
+        socket.onmessage = function(event) {
+            const message = JSON.parse(event.data);
+            const updatesDiv = document.getElementById("updates");
+            const newUpdate = document.createElement("div");
+
+            let statusMessage = "";
+            switch (message.status) {
+                case "created":
+                    statusMessage = `Order ${message.order_id} created.`;
+                    break;
+                case "shipped":
+                    statusMessage = `Order ${message.order_id} shipped.`;
+                    break;
+                case "in_transit":
+                    statusMessage = `Order ${message.order_id} is in transit.`;
+                    break;
+                case "delivered":
+                    statusMessage = `Order ${message.order_id} delivered.`;
+                    break;
+                default:
+                    statusMessage = `Order ${message.order_id} status: ${message.status}`;
+            }
+
+            newUpdate.textContent = statusMessage;
+            updatesDiv.appendChild(newUpdate);
+        };
+
+        socket.onopen = function() {
+            console.log("WebSocket connected.");
+        };
+
+        socket.onclose = function() {
+            console.log("WebSocket disconnected.");
+        };
+    </script>
+</head>
+<body>
+    <h1>Order Notifications</h1>
+    <div id="updates"></div>
+</body>
+</html>
