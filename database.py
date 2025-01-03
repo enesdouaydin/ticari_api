@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 
-SQLALCHEMY_DATABASE_URL = "mssql+pyodbc://test:test123456@localhost\\SQLEXPRESS01/ticari6?driver=ODBC+Driver+17+for+SQL+Server" 
+SQLALCHEMY_DATABASE_URL = "mssql+pyodbc://test:test123456@localhost\\SQLEXPRESS01/server" 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
